@@ -2,6 +2,8 @@
 
 # github的mac客户端开发环境安装配置脚本（解决繁琐的github客户端手动配置问题）
 
+# curl https://bxjs.github.io/cmd_setup_mac_github.sh | sh -s -- -u 老储 -m 2903710916@qq.com
+
 #用法提示
 usage() {
     echo "Usage:"
@@ -91,11 +93,5 @@ config_github_ssh_key(){
     echo "https://github.com/settings/ssh/new"
     sleep 3
     open https://github.com/settings/ssh/new
-    echo "操作完成请后请执行一下回车确认，以便于执行后续的环境初始化操作。"
-    read ok
 }
 config_github_ssh_key
-
-# TODO 其他需要执行的后置初始化操作继续增加（一键统一标准化mac的开发环境实现统一开发环境标准配置）
-
-echo "BXJS MAC 开发环境初始化自动配置 OK!"
