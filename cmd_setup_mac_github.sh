@@ -3,6 +3,12 @@
 # github的mac客户端开发环境安装配置脚本（解决繁琐的github客户端手动配置问题）
 
 # curl https://bxjs.github.io/cmd_setup_mac_github.sh | sh -s -- -u 老储 -m 2903710916@qq.com
+# 更新github的ssh的本地配置密钥，-u更改为自己的昵称，-m更改为自己的github注册邮箱。
+
+# TODO 使用注意事项（改进实现文件名全部小写，自动转换为驼峰类的定义方式，规避文件名的大小写问题）
+# git mv app/src/service/network.ts app/src/service/Network.ts
+# -------------------
+# git 改文件名大小写无法手动更改，需要用这个命令修改，git才能进行版本管理
 
 #用法提示
 usage() {
@@ -69,8 +75,21 @@ config_github_ssh_key(){
     # 删除已经存在的GITHUB历史配置项
     sed -i "" "/^#[ ]*github.*/d" ./config
     sed -i "" "/^Host[ ]*github.com.*/,/^IdentityFile.*/d" ./config
+    sed -i "" "/^Host[ ]*hub.fastgit.org.*/,/^IdentityFile.*/d" ./config
     # cat $HOME/.ssh/config
-    # 将密钥写入到配置文件中增加一个配置项
+    # 将密钥写入到配置文件中增加一个配置项（支持两个默认的GITHUB代理配置）
+    echo "# github proxy" >> ./config
+    echo "Host hub.fastgit.org" >> ./config
+    echo "User $USERMAIL" >> ./config
+    echo "PreferredAuthentications publickey" >> ./config
+    echo "IdentityFile $HOME/.ssh/github" >> ./config
+
+    echo "# github proxy" >> ./config
+    echo "Host github.com.cnpmjs.org" >> ./config
+    echo "User $USERMAIL" >> ./config
+    echo "PreferredAuthentications publickey" >> ./config
+    echo "IdentityFile $HOME/.ssh/github" >> ./config
+
     echo "# github" >> ./config
     echo "Host github.com" >> ./config
     echo "User $USERMAIL" >> ./config
@@ -95,3 +114,4 @@ config_github_ssh_key(){
     open https://github.com/settings/ssh/new
 }
 config_github_ssh_key
+
